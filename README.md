@@ -1,3 +1,20 @@
+# Momence Currency Converter
+
+This is a simple currency converter application using NextJS, React (+ Hooks), TypeScript, Styled Components, and React Query.
+
+This app fetches the latest currency exchange rates from the Czech National Bank, and provides a simple interface for converting between CZK and other currencies.
+
+## Running the app
+
+- Clone the repo
+- Run `yarn` to install dependencies
+- Run `yarn dev` to start the development server
+- Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+---
+
+(Original README.md)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
