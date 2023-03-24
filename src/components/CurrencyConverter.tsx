@@ -30,39 +30,23 @@ const Table = styled.table`
 const API_URL =
   "https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt";
 
-type CurrencyExchangeRate = {
+type CurrencyRate = {
   currency: string;
   code: string;
   rate: number;
 };
 
-// Fetch currency exchange rates from API and parse the response
-const fetchCurrencyExchangeRates = async () => {
-  const response = await fetch(API_URL);
-  const text = await response.text();
+async function fetchRates(): Promise<CurrencyRate[]> {
+  const response = await fetch("/api/currency-rates");
+  const data = await response.json();
 
-  const lines = text.split("\n");
-  const currencies: CurrencyExchangeRate[] = [];
-
-  // Skip the first two and last lines of the response, which contain metadata
-  for (let i = 2; i < lines.length - 1; i++) {
-    const [code, rateStr] = lines[i].split("|");
-    const currency = lines[i].substring(0, lines[i].indexOf("|")).trim();
-    const rate = parseFloat(rateStr.replace(",", "."));
-
-    currencies.push({ currency, code, rate });
-  }
-
-  return currencies;
-};
+  return data.rates;
+}
 
 // Define the CurrencyConverter component
 const CurrencyConverter = () => {
   // Use the useQuery hook from react-query to fetch the currency exchange rates
-  const { data, isLoading, error } = useQuery(
-    "currencyExchangeRates",
-    fetchCurrencyExchangeRates
-  );
+  const { data, isLoading, error } = useQuery("CurrencyRates", fetchRates);
 
   // Define state for the amount and selected currency
   const [amount, setAmount] = useState(0);
@@ -70,7 +54,13 @@ const CurrencyConverter = () => {
 
   // Event handler for when the user changes the amount input
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(parseFloat(event.target.value));
+    const amount = parseInt(event.target.value);
+    if (isNaN(amount)) {
+      setAmount(0);
+      return; // Return early if the amount is not a number
+    }
+
+    setAmount(amount);
   };
 
   // Event handler for when the user changes the currency select
@@ -90,7 +80,7 @@ const CurrencyConverter = () => {
     <Container>
       <>
         {isLoading && <p>Loading currency exchange rates...</p>}
-        {error && <p>Error loading currency exchange rates: {error.message}</p>}
+        {error && <p>Error loading currency exchange rates.</p>}
         {data && (
           <>
             <Table>
