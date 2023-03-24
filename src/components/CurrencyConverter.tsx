@@ -30,10 +30,6 @@ const Table = styled.table`
   }
 `;
 
-// Define API endpoint URL and type for currency exchange rates
-const API_URL =
-  "https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt";
-
 type CurrencyRate = {
   currency: string;
   code: string;
