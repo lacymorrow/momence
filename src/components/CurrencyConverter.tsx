@@ -105,7 +105,8 @@ const CurrencyConverter = () => {
               <label htmlFor="amountInput">Amount (CZK)</label>
 
               <input
-                type="number"
+                pattern="[0-9]+" // Only allow numbers
+                type="text"
                 id="amountInput"
                 value={amount}
                 onChange={handleAmountChange}
