@@ -19,14 +19,12 @@ function parseRates(text: string): CurrencyRate[] {
   for (const line of dataLines) {
     const [country, currency, amount, code, rate] = line.trim().split("|");
 
-	console.log(currency, amount, rate);
+		if(rate) {
+			// Convert the rate to a number and divide by the amount
+			const rateValue = parseFloat(rate.replace(",", ".")) / parseInt(amount, 10);
 
-	if(rate) {
-		// Convert the rate to a number and divide by the amount
-		const rateValue = parseFloat(rate.replace(",", ".")) / parseInt(amount, 10);
-
-		rates.push({ currency, code, rate: rateValue });
-	}
+			rates.push({ currency: `${country} ${currency}`, code, rate: rateValue });
+		}
   }
 
   return rates;
